@@ -1,6 +1,7 @@
 import numpy as np
 from keras.preprocessing.image import array_to_img, img_to_array, load_img, ImageDataGenerator
-from scipy.misc import imresize
+# from scipy.misc import imresize
+from scipy import misc
 from keras.models import Sequential, Model
 from keras.layers import Dense, Conv2D, Input, MaxPool2D, UpSampling2D, Concatenate, Conv2DTranspose
 import tensorflow as tf
@@ -31,7 +32,7 @@ def data_gen_small(data_dir, mask_dir, images, batch_size, dims):
             for i in ix:
                 # images
                 original_img = load_img(data_dir + images[i])
-                resized_img = imresize(original_img, dims+[3])
+                resized_img = misc.imresize(original_img, dims+[3])
                 array_img = img_to_array(resized_img)/255
                 imgs.append(array_img)
 
@@ -39,7 +40,7 @@ def data_gen_small(data_dir, mask_dir, images, batch_size, dims):
                 img_name = images[i]
                 img_name_parts = img_name.split('.')
                 original_mask = load_img(mask_dir + img_name_parts[0] + '_3GT.png')
-                resized_mask = imresize(original_mask, dims+[3])
+                resized_mask = misc.imresize(original_mask, dims+[3])
                 array_mask = img_to_array(resized_mask)/255
                 labels.append(array_mask[:, :, 0])
             imgs = np.array(imgs)
